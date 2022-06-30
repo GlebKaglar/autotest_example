@@ -1,5 +1,3 @@
-import time
-
 import pytest
 from selenium import webdriver
 
@@ -12,13 +10,12 @@ def pytest_addoption(parser):
 @pytest.fixture(scope='function')
 def browser(request):
     language_selected = request.config.getoption('language')  # Получаем параметр language из командной строки
-    link = f'http://selenium1py.pythonanywhere.com/{language_selected}/catalogue/coders-at-work_207/'
     print('\nStart Chrome browser for test...')
     options = webdriver.ChromeOptions()
-    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])  # убирает ненужные системные логи варнинги
+    options.add_experimental_option('prefs', {'intl.accept_languages': language_selected})
     browser = webdriver.Chrome(options=options)
     browser.implicitly_wait(5)
-    browser.get(link)
     yield browser
     print('\nQuit browser')
     browser.quit()
